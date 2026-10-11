@@ -26,10 +26,16 @@ final class WorkspaceBarRevealMonitor {
     }
 
     func start(modifier: WorkspaceBarRevealModifier, holdMilliseconds: Double) {
+        guard GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring else {
+            stop()
+            return
+        }
         self.modifier = modifier
         self.holdMilliseconds = Self.normalizedHoldMilliseconds(holdMilliseconds)
         installEventMonitors()
-        handleFlagsChanged(rawFlags: UInt64(NSEvent.modifierFlags.rawValue))
+        if let flags = GlobalInputAccess.modifierFlags {
+            handleFlagsChanged(rawFlags: UInt64(flags.rawValue))
+        }
     }
 
     func stop() {
@@ -81,7 +87,7 @@ final class WorkspaceBarRevealMonitor {
             }
         }
         if globalMonitor == nil {
-            globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .flagsChanged) { [weak self] event in
+            globalMonitor = GlobalInputAccess.addGlobalMonitor(matching: .flagsChanged) { [weak self] event in
                 MainActor.assumeIsolated {
                     self?.handleFlagsChanged(rawFlags: UInt64(event.modifierFlags.rawValue))
                 }

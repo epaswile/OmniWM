@@ -43,14 +43,14 @@ final class PanelDismissalMonitor {
         ) { [weak self] event in
             self?.handleLocalEvent(event) == true ? nil : event
         }
-        let globalMouse = NSEvent.addGlobalMonitorForEvents(
+        let globalMouse = GlobalInputAccess.addGlobalMonitor(
             matching: [.leftMouseDown, .rightMouseDown]
         ) { [weak self] _ in
             MainActor.assumeIsolated {
                 self?.handlePointer(location: NSEvent.mouseLocation)
             }
         }
-        let globalKey = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
+        let globalKey = GlobalInputAccess.addGlobalMonitor(matching: .keyDown) { [weak self] event in
             MainActor.assumeIsolated {
                 if event.keyCode == 53 {
                     self?.handleEscape()

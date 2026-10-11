@@ -389,7 +389,8 @@ extension WMController {
 
     func syncWorkspaceBarRevealMonitor() {
         guard hasStartedServices,
-              settings.workspaceBar.revealModifier != .off,
+              GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring,
+              settings.workspaceBar.effectiveRevealModifier != .off,
               workspaceBarRefreshIsEnabled
         else {
             workspaceBarRevealMonitor.stop()
@@ -397,7 +398,7 @@ extension WMController {
         }
 
         workspaceBarRevealMonitor.start(
-            modifier: settings.workspaceBar.revealModifier,
+            modifier: settings.workspaceBar.effectiveRevealModifier,
             holdMilliseconds: settings.workspaceBar.revealHoldMilliseconds
         )
     }

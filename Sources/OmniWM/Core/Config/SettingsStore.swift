@@ -16,7 +16,7 @@ final class SettingsStore {
     let niri = NiriSettings()
     let dwindle: DwindlePreferences
     let gestures = GestureSettings()
-    let workspaceBar = WorkspaceBarSettings()
+    let workspaceBar: WorkspaceBarSettings
     let workspaces = WorkspaceSettings()
 
     private let persistence: SettingsFilePersistence
@@ -41,6 +41,11 @@ final class SettingsStore {
     var onWorkspaceHotkeysChanged: (@MainActor () -> Void)?
     var liveWorkspaceNamesForHotkeys: (@MainActor () -> [String])?
     private(set) var configNotice: SettingsConfigNotice?
+
+    // This is the preference for the next launch; GlobalInputAccess owns the active policy.
+    var keyboardInputMode = SettingsStore.defaultExport.keyboardInputMode {
+        didSet { scheduleSave() }
+    }
 
     var hotkeysEnabled = SettingsStore.defaultExport.hotkeysEnabled {
         didSet { scheduleSave() }
@@ -257,8 +262,10 @@ final class SettingsStore {
     init(
         persistence: SettingsFilePersistence = SettingsFilePersistence(),
         runtimeState: RuntimeStateStore = RuntimeStateStore(),
-        autosaveEnabled: Bool = true
+        autosaveEnabled: Bool = true,
+        keyboardInputPolicy: KeyboardInputPolicy = GlobalInputAccess.policy
     ) {
+        workspaceBar = WorkspaceBarSettings(keyboardInputPolicy: keyboardInputPolicy)
         dwindle = DwindlePreferences(gaps: gaps)
         self.persistence = persistence
         self.runtimeState = runtimeState
@@ -355,34 +362,17 @@ final class SettingsStore {
         configNotice = notice
         onConfigNoticeChanged?()
     }
+}
 
+extension SettingsStore {
     func scheduleSave() {
         guard autosaveEnabled, !isApplyingExport else { return }
         persistence.scheduleSave(toExport())
     }
 
-    func scratchpadLabel(for index: Int) -> String? {
-        scratchpadLabels[String(index)]
-    }
-}
-
-extension SettingsStore {
     private func layoutConfigurationDidChange() {
         layoutConfigurationRevision &+= 1
         scheduleSave()
-    }
-
-    static func normalizedScratchpadLabels(_ labels: [String: String]) -> [String: String] {
-        labels.reduce(into: [:]) { normalized, entry in
-            guard let index = Int(entry.key.trimmingCharacters(in: .whitespacesAndNewlines)),
-                  IPCScratchpadSlots.range.contains(index)
-            else {
-                return
-            }
-            let label = entry.value.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !label.isEmpty else { return }
-            normalized[String(index)] = label
-        }
     }
 
     func applyExport(_ export: SettingsExport) {
@@ -397,7 +387,7 @@ extension SettingsStore {
             }
         }
 
-        hotkeysEnabled = export.hotkeysEnabled
+        applyKeyboardControlSettings(export)
         focus.apply(export.focus)
         pointer.margin = export.mouseWarp.margin
         pointer.enabled = export.mouseWarp.enabled
@@ -448,6 +438,11 @@ extension SettingsStore {
 
         appearanceMode = export.appearanceMode
         tabRailAppIcons = export.tabRailAppIcons
+    }
+
+    private func applyKeyboardControlSettings(_ export: SettingsExport) {
+        hotkeysEnabled = export.hotkeysEnabled
+        keyboardInputMode = export.keyboardInputMode
     }
 
     private func pointerSettingsDidChange() {

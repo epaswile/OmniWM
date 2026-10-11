@@ -162,12 +162,16 @@ private struct GlobalBarSettingsSection: View {
                 Picker("Reveal on Modifier Hold", selection: Bindable(settings.workspaceBar).revealModifier) {
                     ForEach(WorkspaceBarRevealModifier.allCases, id: \.self) { modifier in
                         Text(modifier.localizedDisplayName).tag(modifier)
+                            .disabled(modifier != .off && !GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring)
                     }
                 }
                 .onChange(of: settings.workspaceBar.revealModifier) { _, _ in
                     controller.updateWorkspaceBarSettings()
                 }
                 .help("Reveal the workspace bar while holding these modifiers. Can be combined with automatic hiding.")
+                if !GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring {
+                    SettingsCaption(localized: "Modifier-hold reveal is disabled without global keyboard monitoring.")
+                }
 
                 if settings.workspaceBar.revealModifier != .off {
                     SettingsSliderRow(

@@ -15,11 +15,10 @@ struct CapsLockToggler: ~Copyable {
 
     @discardableResult
     mutating func toggle() -> Bool {
-        guard let connection = connection() else { return false }
-        var isLocked = false
-        guard IOHIDGetModifierLockState(connection, Int32(kIOHIDCapsLockState), &isLocked) == KERN_SUCCESS else {
-            return false
-        }
+        guard GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring,
+              let connection = connection(),
+              let isLocked = GlobalInputAccess.capsLockState(connection: connection)
+        else { return false }
         return IOHIDSetModifierLockState(connection, Int32(kIOHIDCapsLockState), !isLocked) == KERN_SUCCESS
     }
 

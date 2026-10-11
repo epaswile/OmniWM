@@ -30,13 +30,15 @@ struct InputHealthSnapshot: Sendable, Equatable {
     let hotkey: HotkeyHealthFacts
     let mouseTapInstalled: Bool
     let secureInput: SecureInputHealthFacts
-    let liveModifierFlags: UInt
+    let liveModifierFlags: UInt?
     let mouseTapDisableCount: Int
     let hyperTapDisableCount: Int
     let lastTapDisable: Date?
+    var keyboardInputMode: KeyboardInputMode = .shortcutsOnly
 
     func formatted() -> String {
         var lines = [
+            "keyboardInputMode=\(keyboardInputMode.rawValue)",
             "hotkeyCenterRunning=\(hotkey.isRunning) hyperActive=\(hotkey.isHyperTriggerActive) "
                 +
                 "hyperTapInstalled=\(hotkey.hyperTriggerTapInstalled) capsLockRemap=\(hotkey.capsLockHyperRemapActive)",
@@ -45,7 +47,8 @@ struct InputHealthSnapshot: Sendable, Equatable {
             "bindings=\(hotkey.bindingCount) sideSpecific=\(hotkey.sideSpecificCount) "
                 +
                 "registrationFailures=\(hotkey.registrationFailureCount) suppressedKeys=\(hotkey.suppressedHotkeyCount)",
-            "mouseTapInstalled=\(mouseTapInstalled) modifierFlags=\(InputDiagnostics.modifierLabel(liveModifierFlags))",
+            "mouseTapInstalled=\(mouseTapInstalled) "
+                + "modifierFlags=\(liveModifierFlags.map(InputDiagnostics.modifierLabel) ?? "not observed")",
             "secureInput observed=\(secureInput.observed) live=\(secureInput.live) "
                 + "subscribed=\(secureInput.subscribed) notifications=\(secureInput.notifications)",
             "tapDisables mouse=\(mouseTapDisableCount) hyper=\(hyperTapDisableCount) "
@@ -117,10 +120,11 @@ enum InputDiagnostics {
             hotkey: controller.hotkeys.hotkeyHealthFacts(),
             mouseTapInstalled: MouseEventHandler._instance?.state.eventTap != nil,
             secureInput: controller.secureInputMonitor.healthFacts(),
-            liveModifierFlags: NSEvent.modifierFlags.rawValue,
+            liveModifierFlags: GlobalInputAccess.modifierFlags?.rawValue,
             mouseTapDisableCount: counters.mouseDisableCount,
             hyperTapDisableCount: counters.hyperDisableCount,
-            lastTapDisable: counters.lastDisable
+            lastTapDisable: counters.lastDisable,
+            keyboardInputMode: GlobalInputAccess.policy.mode
         )
     }
 

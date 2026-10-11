@@ -74906,113 +74906,12 @@
       }
     },
     "Lets OmniWM receive global keyboard, mouse, and trackpad input. Window management cannot start without it." : {
+      "extractionState" : "stale",
       "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OmniWMがキーボード、マウス、トラックパッドのグローバル入力を受信できるようにします。ウィンドウ管理はそれなしでは開始できません。"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ermöglicht OmniWM, globale Eingaben von Tastatur, Maus und Trackpad zu empfangen. Ohne diese Berechtigung kann die Fensterverwaltung nicht starten."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lar OmniWM motta inndata fra tastatur, mus og trackpad i hele systemet. Vindushåndtering kan ikke starte uten dette."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ger OmniWM möjlighet att ta emot global inmatning från tangentbord, mus och styrplatta. Fönsterhanteringen kan inte starta utan denna behörighet."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permite que OmniWM reciba entradas globales de teclado, ratón y trackpad. La gestión de ventanas no puede comenzar sin ello."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "允许 OmniWM 接收全局键盘、鼠标和触控板输入。没有此权限，窗口管理无法启动。"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "इस अनुमति से OmniWM कीबोर्ड, माउस और ट्रैकपैड से आने वाला वैश्विक इनपुट प्राप्त कर सकता है। इसके बिना विंडो प्रबंधन शुरू नहीं हो सकता।"
-          }
-        },
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "يتيح لـ OmniWM تلقي إدخالات لوحة المفاتيح والفأرة ولوحة التتبع على مستوى النظام. لا يمكن بدء إدارة النوافذ بدونه."
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Omogućava OmniWM-u da prima globalni unos sa tastature, miša i dodirne table. Upravljanje prozorima ne može da se pokrene bez ove dozvole."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Επιτρέπει στο OmniWM να λαμβάνει καθολική είσοδο από πληκτρολόγιο, ποντίκι και trackpad. Η διαχείριση παραθύρων δεν μπορεί να ξεκινήσει χωρίς αυτήν."
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מאפשר ל-OmniWM לקבל קלט מקלדת, עכבר ומשטח מגע מכל המערכת. ניהול החלונות לא יכול להתחיל ללא ההרשאה הזו."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Позволяет OmniWM получать ввод с клавиатуры, мыши и трекпада во всей системе. Без этого разрешения управление окнами не запустится."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pozwala OmniWM odbierać globalne sygnały z klawiatury, myszy i gładzika. Bez tego uprawnienia zarządzanie oknami nie może się uruchomić."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Дає OmniWM змогу отримувати глобальні події клавіатури, миші й трекпеда. Без цього доступу керування вікнами не запуститься."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permet à OmniWM de recevoir les entrées globales du clavier, de la souris et du trackpad. La gestion des fenêtres ne peut pas démarrer sans cet accès."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laat OmniWM algemene toetsenbord-, muis- en trackpadinvoer ontvangen. Zonder deze toegang kan het vensterbeheer niet starten."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Consente a OmniWM di ricevere l'input globale da tastiera, mouse e trackpad. La gestione delle finestre non può avviarsi senza questa autorizzazione."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antaa OmniWM:n vastaanottaa näppäimistön, hiiren ja ohjauslevyn syötteitä koko järjestelmässä. Ikkunanhallinta ei voi käynnistyä ilman tätä käyttöoikeutta."
           }
         },
         "da" : {
@@ -75021,10 +74920,112 @@
             "value" : "Giver OmniWM tilladelse til at modtage tastatur-, mus- og pegefeltinput på tværs af systemet. Vinduesstyring kan ikke starte uden denne tilladelse."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ermöglicht OmniWM, globale Eingaben von Tastatur, Maus und Trackpad zu empfangen. Ohne diese Berechtigung kann die Fensterverwaltung nicht starten."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιτρέπει στο OmniWM να λαμβάνει καθολική είσοδο από πληκτρολόγιο, ποντίκι και trackpad. Η διαχείριση παραθύρων δεν μπορεί να ξεκινήσει χωρίς αυτήν."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permite que OmniWM reciba entradas globales de teclado, ratón y trackpad. La gestión de ventanas no puede comenzar sin ello."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antaa OmniWM:n vastaanottaa näppäimistön, hiiren ja ohjauslevyn syötteitä koko järjestelmässä. Ikkunanhallinta ei voi käynnistyä ilman tätä käyttöoikeutta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permet à OmniWM de recevoir les entrées globales du clavier, de la souris et du trackpad. La gestion des fenêtres ne peut pas démarrer sans cet accès."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מאפשר ל-OmniWM לקבל קלט מקלדת, עכבר ומשטח מגע מכל המערכת. ניהול החלונות לא יכול להתחיל ללא ההרשאה הזו."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "इस अनुमति से OmniWM कीबोर्ड, माउस और ट्रैकपैड से आने वाला वैश्विक इनपुट प्राप्त कर सकता है। इसके बिना विंडो प्रबंधन शुरू नहीं हो सकता।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consente a OmniWM di ricevere l'input globale da tastiera, mouse e trackpad. La gestione delle finestre non può avviarsi senza questa autorizzazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMがキーボード、マウス、トラックパッドのグローバル入力を受信できるようにします。ウィンドウ管理はそれなしでは開始できません。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OmniWM이 시스템 전체의 키보드, 마우스, 트랙패드 입력을 받을 수 있게 합니다. 이 권한이 없으면 창 관리를 시작할 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lar OmniWM motta inndata fra tastatur, mus og trackpad i hele systemet. Vindushåndtering kan ikke starte uten dette."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laat OmniWM algemene toetsenbord-, muis- en trackpadinvoer ontvangen. Zonder deze toegang kan het vensterbeheer niet starten."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozwala OmniWM odbierać globalne sygnały z klawiatury, myszy i gładzika. Bez tego uprawnienia zarządzanie oknami nie może się uruchomić."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Позволяет OmniWM получать ввод с клавиатуры, мыши и трекпада во всей системе. Без этого разрешения управление окнами не запустится."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omogućava OmniWM-u da prima globalni unos sa tastature, miša i dodirne table. Upravljanje prozorima ne može da se pokrene bez ove dozvole."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ger OmniWM möjlighet att ta emot global inmatning från tangentbord, mus och styrplatta. Fönsterhanteringen kan inte starta utan denna behörighet."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дає OmniWM змогу отримувати глобальні події клавіатури, миші й трекпеда. Без цього доступу керування вікнами не запуститься."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "允许 OmniWM 接收全局键盘、鼠标和触控板输入。没有此权限，窗口管理无法启动。"
           }
         }
       }
@@ -163120,6 +163121,156 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App 会开启它来保护你输入的内容：开启了安全键盘输入的 Terminal 或 iTerm、密码管理器以及浏览器中的密码栏。如果它一直开启，请退出开启它的 App。"
+          }
+        }
+      }
+    },
+    "Active mode" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode actif"
+          }
+        }
+      }
+    },
+    "Advanced keyboard monitoring" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Écoute avancée du clavier"
+          }
+        }
+      }
+    },
+    "Choose Either for the modifier side in Hotkeys." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dans Raccourcis clavier, choisissez « L’un ou l’autre » pour le côté des modificateurs."
+          }
+        }
+      }
+    },
+    "Keyboard input mode" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode de saisie clavier"
+          }
+        }
+      }
+    },
+    "Keyboard privacy" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confidentialité du clavier"
+          }
+        }
+      }
+    },
+    "Left/Right-specific shortcuts are disabled without global keyboard monitoring. Choose Either." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les raccourcis distinguant gauche et droite sont désactivés sans écoute globale du clavier. Choisissez « L’un ou l’autre »."
+          }
+        }
+      }
+    },
+    "Modifier-hold reveal is disabled without global keyboard monitoring." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L’affichage par maintien d’un modificateur est désactivé sans écoute globale du clavier."
+          }
+        }
+      }
+    },
+    "No global keyboard monitoring" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sans écoute globale du clavier"
+          }
+        }
+      }
+    },
+    "Required for advanced keyboard monitoring. The mode without global keyboard monitoring works without this permission." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nécessaire à l’écoute avancée du clavier. Le mode sans écoute globale du clavier fonctionne sans cette autorisation."
+          }
+        }
+      }
+    },
+    "Restart OmniWM to apply the selected keyboard input mode. The active mode is unchanged until restart." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redémarrez OmniWM pour appliquer le mode de saisie choisi. Le mode actif reste inchangé jusqu’au redémarrage."
+          }
+        }
+      }
+    },
+    "Standard shortcuts work without Input Monitoring. Accessibility is used to manage windows." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les raccourcis classiques fonctionnent sans surveillance des entrées. L’accessibilité sert à gérer les fenêtres."
+          }
+        }
+      }
+    },
+    "System Hyper is disabled without global keyboard monitoring. Standard shortcuts remain available." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le déclencheur Hyper système est désactivé sans écoute globale du clavier. Les raccourcis classiques restent disponibles."
+          }
+        }
+      }
+    },
+    "This protection applies even when Accessibility or Input Monitoring is granted. Accessibility remains necessary for window management." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette protection s’applique même si l’accessibilité ou la surveillance des entrées est autorisée. L’accessibilité reste nécessaire à la gestion des fenêtres."
+          }
+        }
+      }
+    },
+    "This shortcut requires global keyboard monitoring, which is disabled." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce raccourci nécessite l’écoute globale du clavier, qui est désactivée."
+          }
+        }
+      }
+    },
+    "Without global keyboard monitoring, OmniWM receives only registered shortcuts and input in its own windows. System Hyper, Left/Right-specific modifiers, modifier-hold reveal, and Escape outside OmniWM panels are disabled. Mouse controls remain available." : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sans écoute globale du clavier, OmniWM reçoit uniquement les raccourcis enregistrés et les saisies dans ses propres fenêtres. Le déclencheur Hyper système, la distinction gauche/droite des modificateurs, l’affichage par maintien d’une touche et Échap hors des panneaux OmniWM sont désactivés. Les commandes à la souris restent disponibles."
           }
         }
       }

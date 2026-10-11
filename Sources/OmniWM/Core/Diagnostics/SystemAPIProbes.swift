@@ -45,7 +45,11 @@ enum SystemAPIProbes {
     static func inputProbes() -> [PrivateAPISelfTest] {
         var tests: [PrivateAPISelfTest] = []
         let mask = CGEventMask(1 << CGEventType.keyDown.rawValue)
-        if let tap = CGEvent.tapCreate(
+        if !GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring {
+            tests.append(PrivateAPISelfTest(
+                "Keyboard event tap", .inconclusive, "Skipped: global keyboard monitoring is disabled by policy"
+            ))
+        } else if let tap = GlobalInputAccess.createEventTap(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
             options: .listenOnly,
@@ -54,9 +58,9 @@ enum SystemAPIProbes {
             userInfo: nil
         ) {
             CFMachPortInvalidate(tap)
-            tests.append(PrivateAPISelfTest("CGEvent.tapCreate", .works, "listen-only tap created + invalidated"))
+            tests.append(PrivateAPISelfTest("Keyboard event tap", .works, "listen-only tap created + invalidated"))
         } else {
-            tests.append(PrivateAPISelfTest("CGEvent.tapCreate", .failed, "nil — input monitoring permission?"))
+            tests.append(PrivateAPISelfTest("Keyboard event tap", .failed, "nil — input monitoring permission?"))
         }
         var ref: EventHotKeyRef?
         let hotKeyID = EventHotKeyID(signature: OSType(0x4F4D_4E50), id: 0xFFFF)

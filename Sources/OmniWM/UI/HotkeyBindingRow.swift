@@ -121,6 +121,10 @@ struct HotkeyBindingRow: View {
             return String(localized: "Failed to register: this key combination may be reserved by the system")
         case .requiresInputMonitoring:
             return String(localized: "Left/Right-specific shortcuts need Input Monitoring permission to work")
+        case .disabledByKeyboardPrivacy:
+            return String(
+                localized: "Left/Right-specific shortcuts are disabled without global keyboard monitoring. Choose Either."
+            )
         }
     }
 }
@@ -197,7 +201,9 @@ private struct HotkeyBindingControl: View {
                     ) {
                         Text("Either").tag(ModifierSide.either)
                         Text("Left").tag(ModifierSide.left)
+                            .disabled(!GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring)
                         Text("Right").tag(ModifierSide.right)
+                            .disabled(!GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring)
                     }
                     .labelsHidden()
                     .pickerStyle(.menu)

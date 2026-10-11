@@ -15,9 +15,11 @@ enum HotkeyRegistrationFailureReason: Equatable {
     case duplicateBinding
     case systemReserved
     case requiresInputMonitoring
+    case disabledByKeyboardPrivacy
 }
 
 enum SystemHyperTriggerFailure: Equatable {
+    case disabledByKeyboardPrivacy
     case eventTapUnavailable
     case capsLockRemapUnavailable
 }

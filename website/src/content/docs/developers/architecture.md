@@ -183,7 +183,7 @@ While the warning is shown OmniWM rescans every second and dismisses the warning
 or service is gone; Check Again forces an immediate rescan. There is no bypass and no background conflict monitoring
 after bootstrap succeeds.
 
-The launch permission check requires Accessibility and Input Monitoring before bootstrap. Screen Recording is
+The launch permission check requires Accessibility before bootstrap. Input Monitoring is required only when the startup keyboard policy is `globalMonitoring`. The default `shortcutsOnly` policy omits that permission and blocks requests for it. Screen Recording is
 optional and only controls capture-derived visuals. After granting permissions, the user returns to the permissions
 window and chooses **Start OmniWM** or **Continue Without Screen Recording** to finish bootstrap.
 

@@ -143,14 +143,14 @@ final class SystemStatsPopupController {
             self?.handleLocalEvent(event)
             return event
         }
-        let globalMouse = NSEvent.addGlobalMonitorForEvents(
+        let globalMouse = GlobalInputAccess.addGlobalMonitor(
             matching: [.leftMouseDown, .rightMouseDown]
         ) { [weak self] _ in
             MainActor.assumeIsolated {
                 self?.dismissIfPointerOutsidePanel()
             }
         }
-        let globalKey = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
+        let globalKey = GlobalInputAccess.addGlobalMonitor(matching: .keyDown) { [weak self] event in
             MainActor.assumeIsolated {
                 if event.keyCode == 53 {
                     self?.dismiss()

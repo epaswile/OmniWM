@@ -11,6 +11,11 @@ final class WorkspaceBarSettings {
     private nonisolated static let defaults = SettingsExport.WorkspaceBar.defaults()
     @ObservationIgnored var onChange: (() -> Void)?
     @ObservationIgnored var onNotificationBadgesChange: (() -> Void)?
+    private let keyboardInputPolicy: KeyboardInputPolicy
+
+    init(keyboardInputPolicy: KeyboardInputPolicy = GlobalInputAccess.policy) {
+        self.keyboardInputPolicy = keyboardInputPolicy
+    }
 
     var enabled = WorkspaceBarSettings.defaults.enabled {
         didSet { onChange?() }
@@ -104,6 +109,10 @@ final class WorkspaceBarSettings {
 
     var revealModifier = WorkspaceBarSettings.defaults.revealModifier {
         didSet { onChange?() }
+    }
+
+    var effectiveRevealModifier: WorkspaceBarRevealModifier {
+        keyboardInputPolicy.allowsGlobalKeyboardMonitoring ? revealModifier : .off
     }
 
     var revealHoldMilliseconds = WorkspaceBarSettings.defaults.revealHoldMilliseconds {

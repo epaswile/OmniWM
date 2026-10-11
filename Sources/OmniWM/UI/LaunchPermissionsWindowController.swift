@@ -44,7 +44,7 @@ enum LaunchPermissionKind: CaseIterable, Identifiable {
             )
         case .inputMonitoring:
             String(
-                localized: "Lets OmniWM receive global keyboard, mouse, and trackpad input. Window management cannot start without it."
+                localized: "Required for advanced keyboard monitoring. The mode without global keyboard monitoring works without this permission."
             )
         case .screenRecording:
             String(
@@ -67,9 +67,16 @@ struct LaunchPermissionSnapshot: Equatable {
     var accessibilityGranted: Bool
     var inputMonitoringGranted: Bool
     var screenRecordingGranted: Bool
+    var keyboardInputMode: KeyboardInputMode = .shortcutsOnly
+
+    var permissionKinds: [LaunchPermissionKind] {
+        keyboardInputMode == .shortcutsOnly
+            ? [.accessibility, .screenRecording]
+            : LaunchPermissionKind.allCases
+    }
 
     var requiredGranted: Bool {
-        accessibilityGranted && inputMonitoringGranted
+        accessibilityGranted && (keyboardInputMode == .shortcutsOnly || inputMonitoringGranted)
     }
 
     var allGranted: Bool {
@@ -92,6 +99,7 @@ struct LaunchPermissionEnvironment {
     let requestInputMonitoring: @MainActor () -> Void
     let screenRecordingGranted: @MainActor () -> Bool
     let requestScreenRecording: @MainActor () -> Void
+    var policy: KeyboardInputPolicy = GlobalInputAccess.policy
 
     @MainActor
     static var live: Self {
@@ -112,8 +120,9 @@ struct LaunchPermissionEnvironment {
     func snapshot() -> LaunchPermissionSnapshot {
         LaunchPermissionSnapshot(
             accessibilityGranted: accessibilityGranted(),
-            inputMonitoringGranted: inputMonitoringGranted(),
-            screenRecordingGranted: screenRecordingGranted()
+            inputMonitoringGranted: policy.allowsGlobalKeyboardMonitoring && inputMonitoringGranted(),
+            screenRecordingGranted: screenRecordingGranted(),
+            keyboardInputMode: policy.mode
         )
     }
 }
@@ -141,7 +150,9 @@ final class LaunchPermissionsModel {
     func request(_ kind: LaunchPermissionKind) {
         switch kind {
         case .accessibility: environment.requestAccessibility()
-        case .inputMonitoring: environment.requestInputMonitoring()
+        case .inputMonitoring:
+            guard environment.policy.allowsGlobalKeyboardMonitoring else { return }
+            environment.requestInputMonitoring()
         case .screenRecording: environment.requestScreenRecording()
         }
         refresh()
@@ -229,6 +240,12 @@ struct LaunchPermissionsView: View {
                     .accessibilityHeading(.h1)
                 Text("Grant the required permissions to start OmniWM. Screen Recording is optional.")
                     .foregroundStyle(.secondary)
+                if model.snapshot.keyboardInputMode == .shortcutsOnly {
+                    Label("No global keyboard monitoring", systemImage: "keyboard.badge.eye")
+                    Text("Standard shortcuts work without Input Monitoring. Accessibility is used to manage windows.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(24)
@@ -237,7 +254,7 @@ struct LaunchPermissionsView: View {
 
             ScrollView {
                 VStack(spacing: 12) {
-                    ForEach(LaunchPermissionKind.allCases) { kind in
+                    ForEach(model.snapshot.permissionKinds) { kind in
                         LaunchPermissionRow(
                             kind: kind,
                             granted: model.snapshot.isGranted(kind),

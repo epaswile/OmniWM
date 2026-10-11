@@ -93,7 +93,7 @@ extension MouseEventHandler {
 
     private func installAnnotatedMoveTap(callback: CGEventTapCallBack) -> Bool {
         let includesMouseMoved = mouseMovesNeeded
-        state.moveTap = CGEvent.tapCreate(
+        state.moveTap = GlobalInputAccess.createEventTap(
             tap: .cgAnnotatedSessionEventTap,
             place: .headInsertEventTap,
             options: .listenOnly,
@@ -147,7 +147,7 @@ extension MouseEventHandler {
     private func installSessionTap(annotatedMoveTapInstalled: Bool, callback: CGEventTapCallBack) {
         let eventMask = Self.sessionEventMask(annotatedMoveTapInstalled: annotatedMoveTapInstalled)
 
-        state.eventTap = CGEvent.tapCreate(
+        state.eventTap = GlobalInputAccess.createEventTap(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
             options: .defaultTap,

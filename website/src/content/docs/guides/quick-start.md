@@ -23,7 +23,7 @@ These guides follow current `main`. Features newer than the latest [GitHub relea
 
 1. Launch OmniWM from your Applications folder.
 2. In **System Settings > Desktop & Dock > Mission Control**, turn **ON** `Displays have separate Spaces`, then log out of macOS and back in for the change to take effect (skip the logout if it was already on). OmniWM pauses window management until this setting is enabled.
-3. Grant **Accessibility** and **Input Monitoring** in the launch permissions window.
+3. Grant **Accessibility** in the launch permissions window.
 4. Optionally grant **Screen Recording** for capture-derived visuals such as Overview thumbnails.
 5. Return to OmniWM’s permissions window and click **Start OmniWM** or **Continue Without Screen Recording**. If a required permission still appears missing, click **Check Again**.
 

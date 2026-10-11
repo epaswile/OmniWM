@@ -709,7 +709,7 @@ final class HotkeyChordTests: XCTestCase {
             HotkeyBinding(id: "focus.right", command: .focus(.right), binding: leftOnly)
         ]
 
-        let plan = HotkeyCenter.registrationPlan(for: bindings)
+        let plan = HotkeyCenter.registrationPlan(for: bindings, policy: .init(mode: .globalMonitoring))
 
         XCTAssertEqual(plan.registrations.map(\.command), [.focus(.left)])
         XCTAssertEqual(plan.sideSpecificRegistrations.map(\.command), [.focus(.right)])

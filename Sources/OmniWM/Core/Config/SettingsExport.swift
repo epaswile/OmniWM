@@ -98,6 +98,7 @@ struct SettingsExport: Equatable {
 
     var appearanceMode: AppearanceMode
     var tabRailAppIcons: Bool
+    var keyboardInputMode: KeyboardInputMode = .shortcutsOnly
 
     struct Focus: Codable, Equatable {
         var followsMouse: Bool

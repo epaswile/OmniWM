@@ -7,8 +7,11 @@ import Foundation
 import IOKit.hidsystem
 
 extension HotkeyCenter {
-    nonisolated static func bindingFacts(for bindings: [HotkeyBinding]) -> [HotkeyBindingFact] {
-        let failures = registrationPlan(for: bindings).failures
+    nonisolated static func bindingFacts(
+        for bindings: [HotkeyBinding],
+        policy: KeyboardInputPolicy = KeyboardInputPolicy()
+    ) -> [HotkeyBindingFact] {
+        let failures = registrationPlan(for: bindings, policy: policy).failures
         return bindings.compactMap { binding in
             let trigger = binding.binding
             guard !trigger.isUnassigned else { return nil }
@@ -32,15 +35,18 @@ extension HotkeyCenter {
     }
 
     nonisolated static func inputMonitoringAccessGranted() -> Bool {
-        IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOHIDAccessTypeGranted
+        GlobalInputAccess.inputMonitoringAccessGranted()
     }
 
     @discardableResult
     nonisolated static func requestInputMonitoringAccess() -> Bool {
-        IOHIDRequestAccess(kIOHIDRequestTypeListenEvent)
+        GlobalInputAccess.requestInputMonitoringAccess()
     }
 
-    nonisolated static func registrationPlan(for bindings: [HotkeyBinding]) -> HotkeyRegistrationPlan {
+    nonisolated static func registrationPlan(
+        for bindings: [HotkeyBinding],
+        policy: KeyboardInputPolicy = KeyboardInputPolicy()
+    ) -> HotkeyRegistrationPlan {
         let candidates = bindings.filter { !$0.binding.isUnassigned }
 
         var failures: [HotkeyCommand: HotkeyRegistrationFailureReason] = [:]
@@ -62,8 +68,10 @@ extension HotkeyCenter {
                 let registration = HotkeyPlannedRegistration(binding: binding, command: candidate.command)
                 if binding.sidedModifiers.isEmpty {
                     registrations.append(registration)
-                } else {
+                } else if policy.allowsGlobalKeyboardMonitoring {
                     sideSpecific.append(registration)
+                } else {
+                    failures[candidate.command] = .disabledByKeyboardPrivacy
                 }
             case let .mouseButton(binding):
                 mouseButtons[binding] = candidate.command

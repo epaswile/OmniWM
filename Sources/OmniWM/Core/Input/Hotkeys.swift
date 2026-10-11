@@ -53,7 +53,7 @@ final class HotkeyCenter {
             registrationFailureCount: registrationFailures.count,
             sideSpecificCount: sideSpecificDispatch.count,
             bindingCount: configuration.bindings.count,
-            bindings: Self.bindingFacts(for: configuration.bindings)
+            bindings: Self.bindingFacts(for: configuration.bindings, policy: GlobalInputAccess.policy)
         )
     }
 
@@ -119,6 +119,10 @@ final class HotkeyCenter {
         hyperTrigger = HyperTriggerStateMachine(trigger: .none, capsLockRemapped: false)
 
         let hyperEnabled = configuration.systemHyperTrigger.isEnabled
+        guard GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring else {
+            if hyperEnabled { systemHyperTriggerFailure = .disabledByKeyboardPrivacy }
+            return
+        }
         guard hyperEnabled || !sideSpecificDispatch.isEmpty else { return }
 
         if hyperEnabled {
@@ -149,7 +153,7 @@ final class HotkeyCenter {
 
     private func refreshCommandHotkeyRegistrations() {
         carbonRegistrations.unregister()
-        let plan = Self.registrationPlan(for: configuration.bindings)
+        let plan = Self.registrationPlan(for: configuration.bindings, policy: GlobalInputAccess.policy)
         registrationFailures = plan.failures
 
         guard !commandHotkeysSuspended else {
@@ -210,7 +214,7 @@ final class HotkeyCenter {
             }
         }
         let selfPtr = Unmanaged.passUnretained(self).toOpaque()
-        hyperTriggerTap = CGEvent.tapCreate(
+        hyperTriggerTap = GlobalInputAccess.createEventTap(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
             options: .defaultTap,

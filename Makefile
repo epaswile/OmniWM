@@ -1,4 +1,4 @@
-.PHONY: setup doctor format format-check lint lint-fix build localization-check localization-sync run dev-install use-dev use-release test-dev-tools energy-profile test-skylight-live release-check verify check check-tool-versions check-swiftformat-version check-swiftlint-version
+.PHONY: keyboard-input-check setup doctor format format-check lint lint-fix build localization-check localization-sync run dev-install use-dev use-release test-dev-tools energy-profile test-skylight-live release-check verify check check-tool-versions check-swiftformat-version check-swiftlint-version
 
 include Scripts/dev-tools.env
 
@@ -35,7 +35,10 @@ lint-fix: check-tool-versions
 	"$(SWIFTFORMAT)" .
 	"$(SWIFTLINT)" lint
 
-build:
+keyboard-input-check:
+	python3 Scripts/check-keyboard-input-policy.py
+
+build: keyboard-input-check
 	./Scripts/ghostty-preflight.sh verify
 	$(SWIFT_WITH_GHOSTTY) swift build --arch arm64
 

@@ -204,6 +204,31 @@ final class WorkspaceBarRevealSettingsTests: XCTestCase {
         XCTAssertEqual(controller.fullscreenLayoutFrame(for: monitor), reservedFrame)
     }
 
+    @MainActor
+    func testRestrictedModeKeepsExistingRevealBarVisibleAndReserved() {
+        let settings = makeSettingsStore(mode: .shortcutsOnly)
+        settings.workspaceBar.enabled = true
+        settings.workspaceBar.reserveLayoutSpace = true
+        settings.workspaceBar.height = 24
+        settings.workspaceBar.position = .belowMenuBar
+        settings.workspaceBar.revealModifier = .option
+        let controller = WMController(settings: settings)
+        let monitor = Monitor(
+            id: .init(displayId: 1), displayId: 1,
+            frame: CGRect(x: 0, y: 0, width: 1440, height: 900),
+            visibleFrame: CGRect(x: 0, y: 0, width: 1440, height: 860),
+            hasNotch: false, name: "Built-in"
+        )
+        XCTAssertEqual(settings.workspaceBar.revealModifier, .option)
+        XCTAssertEqual(settings.workspaceBar.effectiveRevealModifier, .off)
+        XCTAssertTrue(controller.isWorkspaceBarVisible(on: monitor))
+        XCTAssertEqual(controller.fullscreenLayoutFrame(for: monitor), CGRect(x: 0, y: 0, width: 1440, height: 836))
+        // Changing the persisted preference must not elevate the active policy.
+        settings.keyboardInputMode = .globalMonitoring
+        XCTAssertEqual(settings.toExport().keyboardInputMode, .globalMonitoring)
+        XCTAssertEqual(settings.workspaceBar.effectiveRevealModifier, .off)
+    }
+
     private func defaultsDroppingLines(containing fragments: String...) throws -> Data {
         let toml = String(decoding: try SettingsTOMLCodec.encode(.defaults()), as: UTF8.self)
         let lines = toml.split(separator: "\n", omittingEmptySubsequences: false).filter { line in
@@ -213,7 +238,7 @@ final class WorkspaceBarRevealSettingsTests: XCTestCase {
     }
 
     @MainActor
-    private func makeSettingsStore() -> SettingsStore {
+    private func makeSettingsStore(mode: KeyboardInputMode = .globalMonitoring) -> SettingsStore {
         let root = FileManager.default.temporaryDirectory
             .appendingPathComponent("OmniWMWorkspaceBarRevealTests-\(UUID().uuidString)", isDirectory: true)
         return SettingsStore(
@@ -226,7 +251,8 @@ final class WorkspaceBarRevealSettingsTests: XCTestCase {
                 directory: root.appendingPathComponent("state", isDirectory: true),
                 deferSaves: false
             ),
-            autosaveEnabled: false
+            autosaveEnabled: false,
+            keyboardInputPolicy: KeyboardInputPolicy(mode: mode)
         )
     }
 }

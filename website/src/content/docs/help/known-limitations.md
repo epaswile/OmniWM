@@ -18,7 +18,7 @@ installing so you can decide whether it fits your system and workflow.
 ## Required macOS permissions
 
 - **Accessibility** is required to discover, focus, move, and resize application windows.
-- **Input Monitoring** is required for global hotkeys and optional System Hyper Trigger keys or mouse buttons.
+- **Input Monitoring** is not required for standard shortcuts. It is required only in the opt-in **Advanced keyboard monitoring** mode, which enables System Hyper and Left/Right-specific modifiers.
 - **Screen Recording is optional.** Without it, OmniWM still tiles windows. Overview thumbnails, drag previews, and
   captured Hidden Bar glyphs are unavailable. Wallpaper previews fall back to macOS's image URL, which may show the system default image instead of a native solid colour.
 - **Full Disk Access is optional.** Only Hidden Bar uses it; without it, Hidden Bar is unavailable.

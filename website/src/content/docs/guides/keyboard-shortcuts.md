@@ -5,11 +5,21 @@ sidebar:
   order: 5
 ---
 
+## Keyboard privacy
+
+**No global keyboard monitoring** is the default in **Settings > Hotkeys > Keyboard privacy**. Standard shortcuts use macOS registered hotkeys: OmniWM receives a shortcut identifier, not the stream of keys typed in other applications. Input in OmniWM's own windows and mouse controls remains available. Mouse events retain their associated modifier flags for mouse commands. Input Monitoring is neither required nor requested, even when Accessibility is already granted.
+
+System Hyper, Left/Right-specific modifier shortcuts, workspace-bar reveal by holding modifiers, and Escape dismissal while another app has focus are disabled in this mode. Use **Either** for shortcut modifier sides. A literal Hyper chord produced elsewhere still works as a registered shortcut. Existing macOS shortcut conflicts and Secure Input limitations still apply.
+
+The optional `[general]` setting `keyboardInputMode = "shortcutsOnly"` stores this choice; `"globalMonitoring"` explicitly enables the advanced mode. Missing settings default to `"shortcutsOnly"`, including when upgrading an existing configuration. A change takes effect after restarting OmniWM; **Active mode** shows the policy used by the running process.
+
+Accessibility remains necessary for managing windows. macOS does not offer a narrower Accessibility permission that excludes keyboard access: this protection is enforced by OmniWM's implementation, not by an OS sandbox.
+
 ## Customization and the Hyper modifier
 
 All global shortcuts are customizable in **Settings > Hotkeys**. A shortcut can also be an extra mouse button, alone or with modifiers: click the shortcut, then press the button over it. OmniWM consumes a bound press, so the app under the pointer does not also receive it, and a button used by the System Hyper Trigger or Overview must be unassigned there first. `Hyper` is the literal `Control + Option + Shift + Command` chord by default; which modifiers make up `Hyper` is configurable in Settings > Hotkeys (for example, exclude `Shift` to keep `Hyper + Shift + …` free for extra bindings). Changing the combination retargets every shortcut that currently resolves to `Hyper` onto the new one, so the shortcut list updates in place as you toggle the modifiers.
 
-Optionally pick a **System Hyper Trigger** — a single key (Caps Lock, F13–F20, or a left- or right-side modifier) or an extra mouse button that acts as `Hyper` while held (this needs the Input Monitoring permission). Leave the trigger as `None` if you already produce `Hyper` another way, such as a Karabiner Elements remap.
+Optionally pick a **System Hyper Trigger** — a single key (Caps Lock, F13–F20, or a left- or right-side modifier) or an extra mouse button that acts as `Hyper` while held (this requires opting into **Advanced keyboard monitoring** and granting Input Monitoring permission). Leave the trigger as `None` if you already produce `Hyper` another way, such as a Karabiner Elements remap.
 
 Settings > Hotkeys lists all actions that can be assigned a shortcut, including advanced actions.
 

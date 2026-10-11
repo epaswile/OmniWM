@@ -209,7 +209,9 @@ final class InputDiagnosticsTests: XCTestCase {
             binding: KeyBinding(keyCode: UInt32(kVK_ANSI_L), modifiers: UInt32(cmdKey))
         )
 
-        let facts = HotkeyCenter.bindingFacts(for: [carbon, sided, dupA, dupB])
+        let facts = HotkeyCenter.bindingFacts(
+            for: [carbon, sided, dupA, dupB], policy: .init(mode: .globalMonitoring)
+        )
         let routeByCommand = Dictionary(facts.map { ($0.command, $0.route) }, uniquingKeysWith: { first, _ in first })
 
         XCTAssertEqual(routeByCommand[HotkeyCommand.fullscreen(.managed).displayName], "carbon")

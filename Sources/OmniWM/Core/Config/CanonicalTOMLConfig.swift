@@ -43,6 +43,7 @@ struct CanonicalTOMLConfig: Codable, Equatable {
         var animationsEnabled: Bool
         var animationSpeed: Double?
         var language: String?
+        var keyboardInputMode: KeyboardInputMode?
     }
 
     struct Monitors: Codable, Equatable {
@@ -116,7 +117,8 @@ extension CanonicalTOMLConfig {
             ipcEnabled: export.ipcEnabled,
             animationsEnabled: export.animationsEnabled,
             animationSpeed: AnimationSpeed.normalized(export.animationSpeed),
-            language: export.language
+            language: export.language,
+            keyboardInputMode: export.keyboardInputMode
         )
         focus = export.focus
         mouseWarp = export.mouseWarp
@@ -182,7 +184,8 @@ extension CanonicalTOMLConfig {
             clipboard: clipboard,
             quakeTerminal: quakeTerminal,
             appearanceMode: appearance.mode,
-            tabRailAppIcons: appearance.tabRailAppIcons
+            tabRailAppIcons: appearance.tabRailAppIcons,
+            keyboardInputMode: general.keyboardInputMode ?? .shortcutsOnly
         )
     }
 

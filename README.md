@@ -632,7 +632,7 @@ OmniWM is a free, open-source, Developer ID-signed and Apple-notarized tiling wi
 
 ## Compatibility and Limitations
 
-OmniWM requires Apple Silicon, macOS 26 or later, Accessibility, Input Monitoring, and `Displays have separate Spaces`. Screen Recording is optional. Read the complete [Compatibility, Requirements & Limitations](https://omniwm.app/help/known-limitations/) page before installing.
+OmniWM requires Apple Silicon, macOS 26 or later, Accessibility, and `Displays have separate Spaces`. Screen Recording is optional. Read the complete [Compatibility, Requirements & Limitations](https://omniwm.app/help/known-limitations/) page before installing.
 
 - **Dwindle restore scope** — After a restart OmniWM rebuilds each Dwindle workspace from the persisted placements: split orientation and ratio, tab-group membership, tab order, and the active tab. Fullscreen state and the selected window are not restored, and once a window without a persisted placement is present, later windows insert normally instead of being placed from the catalog.
 - **Scratchpad membership** — Window membership lasts for the current OmniWM process. Scratchpad labels persist, but memberships do not.
@@ -651,7 +651,7 @@ OmniWM is built for high responsiveness and smooth, crisp animations.
 
 - macOS 26+ (Tahoe) on Apple Silicon
 - Hidden Bar concealment and optional issue-report rewriting require macOS 27 or later; rewriting also requires enabled Apple Intelligence and an available local model
-- Accessibility and Input Monitoring permissions (required at launch)
+- Accessibility permission (required at launch); Input Monitoring only for the opt-in advanced keyboard mode
 - Screen Recording permission for Overview thumbnails, drag previews, and captured Hidden Bar glyphs (optional)
 - Full Disk Access permission for Hidden Bar concealment (optional)
 - Displays have separate spaces **ON** (the macOS default; OmniWM pauses window management until it is enabled)
@@ -722,7 +722,7 @@ After either installation, complete the macOS setup in steps 3-7 below.
 2. Extract and move `OmniWM.app` to `/Applications`
 3. In System Settings > Desktop & Dock > Mission Control, turn **ON** `Displays have separate Spaces`
 4. Log out of macOS and log back in for that change to take effect unless you had it on already
-5. Launch OmniWM and grant Accessibility and Input Monitoring when prompted
+5. Launch OmniWM and grant Accessibility when prompted
 6. Optionally grant Screen Recording for capture-derived visuals
 7. Return to OmniWM’s permissions window and click **Start OmniWM** or **Continue Without Screen Recording**. If a required permission still appears missing, click **Check Again**
 
@@ -776,7 +776,7 @@ For setup, installation options, commands, queries, rules, subscriptions, and se
 1. Launch OmniWM from your Applications folder
 2. In System Settings > Desktop & Dock > Mission Control, turn **ON** `Displays have separate Spaces`
 3. Log out of macOS and log back in for that change to take effect unless you had it on already
-4. Grant Accessibility and Input Monitoring in the launch permissions window, and optionally Screen Recording. Return to that window and click **Start OmniWM** or **Continue Without Screen Recording**; use **Check Again** if a required permission still appears missing
+4. Grant Accessibility in the launch permissions window, and optionally Screen Recording. Return to that window and click **Start OmniWM** or **Continue Without Screen Recording**; use **Check Again** if a required permission still appears missing
 5. Windows will automatically tile in orientation-aware Niri containers: monitors using horizontal orientation show columns that scroll left and right, while vertical orientation shows rows that scroll up and down
 6. Keep one macOS Space per display and navigate with OmniWM workspaces; extra native Spaces are tolerated (their windows are left to macOS, not tiled)
 7. Use the defaults in [Keyboard Shortcuts](#keyboard-shortcuts) to navigate, and customize them in `Settings > Hotkeys`
@@ -815,9 +815,20 @@ OmniWM offers two layout engines that you can switch between per workspace:
 
 Use the `Toggle Workspace Layout` shortcut below to switch layouts per workspace or configure them in GUI settings.
 
-### Keyboard Shortcuts
+#
+## Keyboard privacy
 
-All shortcuts are customizable in Settings > Hotkeys. `Hyper` is the literal `Control + Option + Shift + Command` chord by default; which modifiers make up `Hyper` is configurable in Settings > Hotkeys (for example, exclude `Shift` to keep `Hyper + Shift + …` free for extra bindings). Changing the combination retargets every shortcut that currently resolves to `Hyper` onto the new one, so the shortcut list updates in place as you toggle the modifiers. Optionally pick a **System Hyper Trigger** — a single key (Caps Lock, F13–F20, or a left- or right-side modifier) or an extra mouse button that acts as `Hyper` while held (this needs Input Monitoring permission). Leave the trigger as `None` if you already produce `Hyper` another way, such as a Karabiner Elements remap. The tables below list all the default hotkeys:
+**No global keyboard monitoring** is the default in **Settings > Hotkeys > Keyboard privacy**. Standard shortcuts use macOS registered hotkeys: OmniWM receives a shortcut identifier, not the stream of keys typed in other applications. Input in OmniWM's own windows and mouse controls remains available. Mouse events retain their associated modifier flags for mouse commands. Input Monitoring is neither required nor requested, even when Accessibility is already granted.
+
+System Hyper, Left/Right-specific modifier shortcuts, workspace-bar reveal by holding modifiers, and Escape dismissal while another app has focus are disabled in this mode. Use **Either** for shortcut modifier sides. A literal Hyper chord produced elsewhere still works as a registered shortcut. Existing macOS shortcut conflicts and Secure Input limitations still apply.
+
+The optional `[general]` setting `keyboardInputMode = "shortcutsOnly"` stores this choice; `"globalMonitoring"` explicitly enables the advanced mode. Missing settings default to `"shortcutsOnly"`, including when upgrading an existing configuration. A change takes effect after restarting OmniWM; **Active mode** shows the policy used by the running process.
+
+Accessibility remains necessary for managing windows. macOS does not offer a narrower Accessibility permission that excludes keyboard access: this protection is enforced by OmniWM's implementation, not by an OS sandbox.
+
+## Keyboard Shortcuts
+
+All shortcuts are customizable in Settings > Hotkeys. `Hyper` is the literal `Control + Option + Shift + Command` chord by default; which modifiers make up `Hyper` is configurable in Settings > Hotkeys (for example, exclude `Shift` to keep `Hyper + Shift + …` free for extra bindings). Changing the combination retargets every shortcut that currently resolves to `Hyper` onto the new one, so the shortcut list updates in place as you toggle the modifiers. Optionally pick a **System Hyper Trigger** — a single key (Caps Lock, F13–F20, or a left- or right-side modifier) or an extra mouse button that acts as `Hyper` while held (this requires opting into **Advanced keyboard monitoring** and granting Input Monitoring permission). Leave the trigger as `None` if you already produce `Hyper` another way, such as a Karabiner Elements remap. The tables below list all the default hotkeys:
 
 Layout legend:
 - `Shared` works in any active layout.

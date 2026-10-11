@@ -5,6 +5,10 @@ import AppKit
 import SwiftUI
 
 struct MenuHeader: View {
+    private var appName: String {
+        Bundle.main.bundleIdentifier == "com.barut.OmniWM.dev" ? "OmniWM build" : "OmniWM"
+    }
+
     private var appVersion: String {
         Bundle.main.appVersion ?? "0.3.1"
     }
@@ -17,7 +21,7 @@ struct MenuHeader: View {
                 .frame(width: 36, height: 36)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
-                    Text("OmniWM")
+                    Text(verbatim: appName)
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(Color(nsColor: .labelColor))
                     Circle()

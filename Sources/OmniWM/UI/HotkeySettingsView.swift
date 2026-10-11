@@ -171,17 +171,21 @@ struct HotkeySettingsView: View {
                 localized: "Search commands, edit shortcuts, and review registration problems without leaving the settings window."
             )
         ) {
+            KeyboardPrivacySettingsSection(settings: settings)
             Section("Controls") {
                 LabeledContent("System Hyper Trigger") {
                     Picker("System Hyper Trigger", selection: systemHyperTriggerBinding) {
                         Text("None").tag(SystemHyperTrigger.none)
                         ForEach(SystemHyperTrigger.selectableKeyCodes, id: \.self) { code in
                             Text(KeySymbolMapper.keyName(code)).tag(SystemHyperTrigger.key(code))
+                                .disabled(!GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring)
                         }
                         ForEach(SystemHyperTrigger.selectableMouseButtons, id: \.self) { button in
                             Text("Mouse Button \(button)").tag(SystemHyperTrigger.mouseButton(button))
                                 .disabled(
-                                    settings.overview.mouseButton == button || hotkeyMouseButtons.contains(button)
+                                    !GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring
+                                        || settings.overview.mouseButton == button || hotkeyMouseButtons
+                                        .contains(button)
                                 )
                         }
                     }
@@ -197,11 +201,17 @@ struct HotkeySettingsView: View {
                     SettingsCaption(hyperTriggerError)
                 }
                 if let triggerFailure = controller.systemHyperTriggerFailure {
-                    SettingsCaption(systemHyperTriggerFailureMessage(triggerFailure))
+                    SettingsCaption(triggerFailure.localizedMessage)
                 }
-                SettingsCaption(localized:
-                    "Hold this key or button to act as \(settings.hyperKeyModifiers.symbolsString) (Hyper). Needs Input Monitoring permission. Leave as None to use a Hyper key set up elsewhere, such as Karabiner."
-                )
+                if GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring {
+                    SettingsCaption(localized:
+                        "Hold this key or button to act as \(settings.hyperKeyModifiers.symbolsString) (Hyper). Needs Input Monitoring permission. Leave as None to use a Hyper key set up elsewhere, such as Karabiner."
+                    )
+                } else {
+                    SettingsCaption(
+                        localized: "System Hyper is disabled without global keyboard monitoring. Standard shortcuts remain available."
+                    )
+                }
 
                 LabeledContent("Hyper Key Modifiers") {
                     HStack(spacing: 12) {
@@ -219,12 +229,14 @@ struct HotkeySettingsView: View {
                     "Modifiers that make up the Hyper chord. Unchecked modifiers stay free to combine with Hyper in shortcuts, such as Hyper+Shift when Shift is excluded."
                 )
 
-                LabeledContent("Input Monitoring") {
-                    HStack(spacing: 10) {
-                        Text(inputMonitoringStatus.displayText)
-                            .foregroundStyle(inputMonitoringStatus == .granted ? Color.secondary : Color.orange)
-                        Button("Request Permission") {
-                            refreshInputMonitoringStatus(requestIfNeeded: true)
+                if GlobalInputAccess.policy.allowsGlobalKeyboardMonitoring {
+                    LabeledContent("Input Monitoring") {
+                        HStack(spacing: 10) {
+                            Text(inputMonitoringStatus.displayText)
+                                .foregroundStyle(inputMonitoringStatus == .granted ? Color.secondary : Color.orange)
+                            Button("Request Permission") {
+                                refreshInputMonitoringStatus(requestIfNeeded: true)
+                            }
                         }
                     }
                 }
@@ -364,15 +376,6 @@ struct HotkeySettingsView: View {
                 && settings.hyperKeyModifiers.modifierCount <= HyperKeyModifiers.minimumModifierCount
         )
         .accessibilityLabel("Hyper includes \(title)")
-    }
-
-    private func systemHyperTriggerFailureMessage(_ failure: SystemHyperTriggerFailure) -> String {
-        switch failure {
-        case .eventTapUnavailable:
-            String(localized: "System Hyper trigger is unavailable: grant Input Monitoring permission.")
-        case .capsLockRemapUnavailable:
-            String(localized: "System Hyper trigger is unavailable: Caps Lock remapping failed.")
-        }
     }
 
     private func handleChordCaptured(actionId: String, newTrigger: HotkeyTrigger) {

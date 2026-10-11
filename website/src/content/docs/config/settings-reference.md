@@ -40,6 +40,7 @@ Global switches: hotkeys, Hyper key, default layout, sleep, updates, IPC, animat
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
+| `keyboardInputMode` *(optional)* | string | `"shortcutsOnly"` | **Unreleased.** `shortcutsOnly` disables all global keyboard monitoring, including via Accessibility. Standard registered shortcuts and local input remain available. `globalMonitoring` opts into advanced features. Requires restarting OmniWM; missing values use `shortcutsOnly`. |
 | `hotkeysEnabled` | boolean | `true` | Master switch for all global hotkeys. |
 | `systemHyperTrigger` | string | `"None"` | Physical trigger for Hyper: `None`, a key name (`CapsLock`, `F13`–`F20`, `LeftControl`/`RightControl`, `LeftOption`/`RightOption`, `LeftShift`/`RightShift`, `LeftCommand`/`RightCommand`; OmniWM writes these with a space, for example `"Left Control"` and `"Caps Lock"`, and accepts both spellings), or `MouseButton3`/`MouseButton4`/`MouseButton5`. |
 | `hyperKeyModifiers` | string | `"Control+Option+Shift+Command"` | Modifier set Hyper expands to: `+`-joined names, at least two of Control/Option/Shift/Command. |

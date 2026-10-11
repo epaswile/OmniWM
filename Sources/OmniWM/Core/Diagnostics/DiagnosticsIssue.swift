@@ -131,6 +131,7 @@ struct DiagnosticsIssue: Identifiable, Equatable {
             case .duplicateBinding: "Two OmniWM commands are bound to this shortcut."
             case .systemReserved: "macOS or another app already uses this shortcut."
             case .requiresInputMonitoring: "This shortcut needs Input Monitoring permission."
+            case .disabledByKeyboardPrivacy: "This shortcut requires global keyboard monitoring, which is disabled."
             }
         case let .hotkeyCoFireAdvisory(_, _, _, advisory):
             advisory
@@ -173,6 +174,7 @@ struct DiagnosticsIssue: Identifiable, Equatable {
             case .duplicateBinding: "Assign a unique chord to one of the commands in Hotkeys."
             case .systemReserved: "Reassign this command to a free chord in Hotkeys."
             case .requiresInputMonitoring: "Grant Input Monitoring in System Settings, or reassign the chord."
+            case .disabledByKeyboardPrivacy: "Choose Either for the modifier side in Hotkeys."
             }
         case .hotkeyCoFireAdvisory:
             "Reassign this command in Hotkeys, or clear the conflicting shortcut in System Settings → Keyboard."
@@ -280,6 +282,8 @@ extension DiagnosticsIssue {
                 return String(localized: "macOS or another app already uses this shortcut.")
             case .requiresInputMonitoring:
                 return String(localized: "This shortcut needs Input Monitoring permission.")
+            case .disabledByKeyboardPrivacy:
+                return String(localized: "This shortcut requires global keyboard monitoring, which is disabled.")
             }
         case let .hotkeyCoFireAdvisory(actionID, _, _, advisory):
             if actionID == "openCommandPalette" {
@@ -353,6 +357,8 @@ extension DiagnosticsIssue {
                 String(localized: "Reassign this command to a free chord in Hotkeys.")
             case .requiresInputMonitoring:
                 String(localized: "Grant Input Monitoring in System Settings, or reassign the chord.")
+            case .disabledByKeyboardPrivacy:
+                String(localized: "Choose Either for the modifier side in Hotkeys.")
             }
         case .hotkeyCoFireAdvisory:
             String(

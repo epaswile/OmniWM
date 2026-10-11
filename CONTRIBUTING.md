@@ -56,7 +56,7 @@ make run
 
 This builds your checked-out code, packages and signs **OmniWM Dev.app**, installs it at `~/Applications/OmniWM Dev.app`, and opens it. It builds before quitting the running OmniWM copy; if that copy cannot quit, installation stops with an error. Your normal OmniWM app remains installed. Only one copy runs at a time.
 
-On first launch, grant **Accessibility** and **Input Monitoring** to **OmniWM Dev** in the permissions window. **Screen Recording** is optional for capture-derived visuals such as Overview thumbnails. Dev has its own permissions, separate from your normal app. Follow any restart prompt after granting permissions, then return to the permissions window and click **Start OmniWM** or **Continue Without Screen Recording**.
+On first launch, grant **Accessibility** to **OmniWM Dev** in the permissions window. **Screen Recording** is optional for capture-derived visuals such as Overview thumbnails. Dev has its own permissions, separate from your normal app. Follow any restart prompt after granting permissions, then return to the permissions window and click **Start OmniWM** or **Continue Without Screen Recording**.
 
 Edit code in your preferred editor, then run `make run` again to rebuild. You can also launch the installed Dev app from Finder.
 
@@ -211,6 +211,17 @@ Local releases via `Scripts/omniwm_release.py` use your own keychain and notariz
 The **Main branch protection** ruleset blocks branch deletion and force-pushes. Keep those protections and do not grant GitHub Actions an **Always** bypass. The release workflow uses a normal fast-forward push and rejects additional blocking rules before publication, even when its token could bypass them. Required checks or pull-request-only updates need a release flow that publishes an already-reviewed version commit; do not bypass those rules to keep the current flow working.
 
 Re-enable **OmniWM CI** and confirm **Verify** and **Tests** on hosted runners. For an existing PR, use **Actions → OmniWM CI → Run workflow** and enter its PR number to test its merge with the base branch. A manual run provides logs; it does not replace the PR's required check. Updating the PR branch triggers its normal PR checks. Approve first-time fork runs when needed.
+
+
+### Global keyboard input boundary
+
+`KeyboardInputPolicy` is immutable and defaults to `shortcutsOnly`. `GlobalInputAccess` reads and freezes it before bootstrap, independently of TCC permissions. Settings imports and file watching only change the preference for the next launch; they cannot elevate the running process to global monitoring. Missing, malformed or unknown mode values fail closed.
+
+All global event taps, AppKit global monitors, global modifier-state reads and Input Monitoring requests must pass through `GlobalInputAccess`. In the restricted mode, event subscriptions accept only an explicit mouse-event allowlist. Keyboard, mixed and unknown event masks are rejected before invoking native APIs. Diagnostic probes use the same boundary. Carbon registered-hotkey identifiers and local AppKit events are separate permitted paths; do not replace them with a keyboard event tap as a fallback.
+
+`make build`, `make verify` and app packaging run `Scripts/check-keyboard-input-policy.py`. It rejects known acquisition APIs outside the reviewed boundary, including raw HID and Carbon keyboard streams. `KeyboardInputPolicyTests`, `LaunchPermissionsTests` and `Tests/DevToolingTests/test_keyboard_input_policy.py` cover denial before API invocation, permission gating, configuration compatibility and shortcut registration. Run both the Swift suite and `make test-dev-tools` after input changes. Direct `swift build` does not run the source checker; use `make build` for a checked build.
+
+When merging upstream changes, keep this boundary and its tests, and review new native input APIs and dependency changes. The checker is a regression guard, not a sandbox or a proof about arbitrary future code. Installing an upstream binary that does not include this feature replaces the protection; rebuild this checkout to retain it.
 
 ## Trace Files
 

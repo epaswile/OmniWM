@@ -14,17 +14,20 @@ final class LaunchPermissionsTests: XCTestCase {
     }
 
     func testRequiredPermissionMatrix() {
-        for accessibilityGranted in [false, true] {
-            for inputMonitoringGranted in [false, true] {
-                let snapshot = LaunchPermissionSnapshot(
-                    accessibilityGranted: accessibilityGranted,
-                    inputMonitoringGranted: inputMonitoringGranted,
-                    screenRecordingGranted: false
-                )
-                XCTAssertEqual(
-                    snapshot.requiredGranted,
-                    accessibilityGranted && inputMonitoringGranted
-                )
+        for mode in KeyboardInputMode.allCases {
+            for accessibilityGranted in [false, true] {
+                for inputMonitoringGranted in [false, true] {
+                    let snapshot = LaunchPermissionSnapshot(
+                        accessibilityGranted: accessibilityGranted,
+                        inputMonitoringGranted: inputMonitoringGranted,
+                        screenRecordingGranted: false,
+                        keyboardInputMode: mode
+                    )
+                    XCTAssertEqual(
+                        snapshot.requiredGranted,
+                        accessibilityGranted && (mode == .shortcutsOnly || inputMonitoringGranted)
+                    )
+                }
             }
         }
     }
@@ -42,7 +45,7 @@ final class LaunchPermissionsTests: XCTestCase {
 
     func testRequestRoutesToSelectedPermissionAndRefreshes() {
         let state = State()
-        let model = LaunchPermissionsModel(environment: environment(state))
+        let model = LaunchPermissionsModel(environment: environment(state, mode: .globalMonitoring))
 
         model.request(.inputMonitoring)
         XCTAssertEqual(state.requested, [.inputMonitoring])
@@ -66,14 +69,32 @@ final class LaunchPermissionsTests: XCTestCase {
         XCTAssertEqual(model.primaryActionTitle, "Start OmniWM")
     }
 
-    private func environment(_ state: State) -> LaunchPermissionEnvironment {
+    func testStrictModeNeverChecksOrRequestsInputMonitoring() {
+        let state = State()
+        state.accessibilityGranted = true
+        let model = LaunchPermissionsModel(environment: environment(state))
+        model.request(.inputMonitoring)
+        model.refresh()
+        XCTAssertTrue(state.requested.isEmpty)
+        XCTAssertTrue(model.snapshot.requiredGranted)
+        XCTAssertEqual(model.snapshot.permissionKinds, [.accessibility, .screenRecording])
+    }
+
+    private func environment(
+        _ state: State,
+        mode: KeyboardInputMode = .shortcutsOnly
+    ) -> LaunchPermissionEnvironment {
         LaunchPermissionEnvironment(
             accessibilityGranted: { state.accessibilityGranted },
             requestAccessibility: { state.requested.append(.accessibility) },
-            inputMonitoringGranted: { state.inputMonitoringGranted },
+            inputMonitoringGranted: {
+                XCTAssertEqual(mode, .globalMonitoring, "Strict startup must not probe Input Monitoring")
+                return state.inputMonitoringGranted
+            },
             requestInputMonitoring: { state.requested.append(.inputMonitoring) },
             screenRecordingGranted: { state.screenRecordingGranted },
-            requestScreenRecording: { state.requested.append(.screenRecording) }
+            requestScreenRecording: { state.requested.append(.screenRecording) },
+            policy: KeyboardInputPolicy(mode: mode)
         )
     }
 }
